@@ -315,23 +315,23 @@ def main(argv):
         dType.DobotConnect.DobotConnect_Occupied: "DobotConnect_Occupied"}
 
     # Load Dll and get the CDLL object
-    #dobot0, state1 = dType.ConnectDobotX("COM3")
-    #dobot1, state2 = dType.ConnectDobotX("COM6")
+    dobot0, state1 = dType.ConnectDobotX("COM3")
+    dobot1, state2 = dType.ConnectDobotX("COM6")
 
     #print(dType.ConnectDobotX("COM3"))
     #print(dType.ConnectDobotX("COM6"))
     # Connect Dobot
-    #print("Connect status1:", CON_STR[state1[0]])
-    #print("Connect status2:", CON_STR[state2[0]])
+    print("Connect status1:", CON_STR[state1[0]])
+    print("Connect status2:", CON_STR[state2[0]])
 
-    #PickandPlace(numberofitems,speed,distance,dobot0,dobot1)
+    PickandPlace(numberofitems,speed,distance,dobot0,dobot1)
 
     # Identify object with JeVois Camera
     objectid = objectFound()
     #objectid = cube2.png
     print("object id : ", objectid)
 
-    #Sorting(numberofitems, speed, objectid, dobot0, dobot1)
+    Sorting(numberofitems, speed, objectid, dobot0, dobot1)
 
     # Disconnect All Dobots
     dType.DisconnectAll()
