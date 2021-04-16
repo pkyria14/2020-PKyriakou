@@ -1,0 +1,6 @@
+from github download dobot files: curl https://github.com/pkyria14/2020-PKyriakou.git
+Start Docker container with python 5.4 gb installed
+Docker ps to see container id to copy files inside (8aaaa1d33df3)
+Stop container and run docker cp files/path 8aaaa1d33df3:/files/placed
+example run to copy (docker cp Desktop/test 8aaaa1d33df3:test)
+Start docker container
