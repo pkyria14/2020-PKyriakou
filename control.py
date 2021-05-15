@@ -7,8 +7,8 @@ from threading import Thread
 from datetime import datetime
 
 
-serdev = 'COM4'  # serial device of JeVois 1
-serdev2 = 'COM13'  # serial device of Jevois 2
+serdev = 'COM13'  # serial device of JeVois 1
+serdev2 = 'COM17'  # serial device of Jevois 2
 
 # JEVOIS CAMERA
 
@@ -36,7 +36,7 @@ def objectFound(serdev):
             # Assign some named Python variables to the tokens:
             key, id, x, y, w, h = tok
             id = (id.decode('utf-8'))
-            print(id)
+            #print(id)
             return id
 
 
@@ -246,12 +246,11 @@ def belt_job(belt,distance,dobot0,dobot1,):
 
     if (belt % 2 == 0):
         Thread(target=dType.SetEMotorSEx, args=(dobot1, 0, 1, int(vel), distance * 10000, 1,)).start()
-        #dType.dSleep(4 * 1000) # time the belt will run
-        #dType.SetEMotorSEx(dobot1, 0, 0, int(vel), 0, 1) #stop conveyor belt
         belt = belt + 1 #change belt
     else:
         Thread(target=dType.SetEMotorSEx, args=(dobot0, 0, 1, int(vel), distance * 10000, 1,)).start()
         belt = belt - 1 #change belt
+
 
 def PickandPlace(numberofitems, speed, distance, dobot0, dobot1):
     """check default values"""
@@ -264,6 +263,7 @@ def PickandPlace(numberofitems, speed, distance, dobot0, dobot1):
     INITIALIZE_PickandPlace(dobot1, speed)
     print('START PICK&PLACE')
     stop = 0
+    exectime = 0 # for time metrics
     side = False
     belt = 1
     i = 0  # for which cube to pick up
@@ -272,6 +272,9 @@ def PickandPlace(numberofitems, speed, distance, dobot0, dobot1):
 
         t1 = Thread(target = items_job, args=(dobot1,i,side,))
         t2 = Thread(target = belt_job, args=(belt,distance,dobot0,dobot1,))
+
+        # calculate execution time
+        #start_time = time.time()
 
         t1.start()
         time.sleep(10) # to synchronise the procedure
@@ -286,19 +289,24 @@ def PickandPlace(numberofitems, speed, distance, dobot0, dobot1):
             # Identify object with JeVois Camera
             print("JEVOIS TIME\n")
             #objectid = objectFound(serdev)
+            #print("object id : ", objectid)
+
             #objectid2 = objectFound(serdev2)
             objectid = "blue.png"
             objectid2 = "green.png"
-            #print("object id : ", objectid)
-            #print("object id 2 : ", objectid2)
+            print("object id 2 : ", objectid2)
+
             Sorting(numberofitems, speed,  objectid, objectid2, dobot0, dobot1)
+
 
         t1.join()
         t2.join()
-
-
+        #exectime = exectime + (time.time() - start_time)
+    # execution time output
+    #print("--- Sorting %s seconds ---", exectime)
 
 """
+    #Single-Threade program
     while stop < numberofitems:
         stop = stop + 1
         if (i == 0):
@@ -376,7 +384,7 @@ def main(argv):
         if opt == '-h': # print usage of program
             print('USAGE : control.py -n <numberofitems> -s <speed>')
         elif opt in ("-n", "--numberofitems"):
-            if (numberofitems < 10 and numberofitems > 0):
+            if (numberofitems > 0):
                 numberofitems = int(arg)
         elif opt in ("-d", "--distance"):
             distance = int(arg)
@@ -395,10 +403,11 @@ def main(argv):
     CON_STR = {
         dType.DobotConnect.DobotConnect_NoError: "DobotConnect_NoError",
         dType.DobotConnect.DobotConnect_NotFound: "DobotConnect_NotFound",
-        dType.DobotConnect.DobotConnect_Occupied: "DobotConnect_Occupied"}
+        dType.DobotConnect.DobotConnect_Occupied: "DobotConnect_Occupied"
+    }
 
     # Load Dll and get the CDLL object
-    dobot0, state1 = dType.ConnectDobotX("COM11") # pick and place
+    dobot0, state1 = dType.ConnectDobotX("COM9") # pick and place
     dobot1, state2 = dType.ConnectDobotX("COM3") # sorting
 
     # print(dType.ConnectDobotX("COM3"))
@@ -407,11 +416,11 @@ def main(argv):
     print("Connect status1:", CON_STR[state1[0]])
     print("Connect status2:", CON_STR[state2[0]])
 
-
     PickandPlace(numberofitems,speed,distance,dobot0,dobot1)
 
     # Disconnect All Dobots
     dType.DisconnectAll()
+
 
 
 if __name__ == "__main__":
