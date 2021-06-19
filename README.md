@@ -17,11 +17,9 @@ This document describes the secondary development environment building and demo 
 - DobotControl.py : Secondary encapsulation of Dobot API. In order to get you up and running quickly, the code in the example adds a certain comment for easy reading.Examples are as follows:
 
 ```python
-#将dll读取到内存中并获取对应的CDLL实例
 #Load Dll and get the CDLL object
 api = dType.load()
 
-#建立与dobot的连接
 #Connect Dobot
 state = dType.ConnectDobot(api, "", 115200)[0]
 print("Connect status:",CON_STR[state])
@@ -69,7 +67,7 @@ install_name_tool -change @executable_path/QtSerialPort.framework/Versions/5/QtS
 - cd DobotDemoForPython
 Use vscode debugging, be sure to use the DobotDemoForPython path
 - Connect the Dobot Magician
-- python DobotControl.py
+- python control.py
 
 ## Attention
 
