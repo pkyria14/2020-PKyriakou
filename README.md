@@ -1,8 +1,7 @@
 # DobotDemoForPython64
 
 DobotDemoForPython64 is the demo of python package dynamic library files. It can be used directly by the python function to control Dobot Magician.
-
-This document describes the secondary development environment building and demo python codes, frameworks, and systems, aiming to help secondary developer to understand common API of Dobot Magician and build development environment quickly.
+This is a utility program for the dobot magician robotic arm, written in python. Useful for setting up various experiments with multiple robotic arms.
 
 <div align=center>
 
@@ -18,16 +17,21 @@ This document describes the secondary development environment building and demo 
 
 ```python
 #Load Dll and get the CDLL object
-api = dType.load()
+dobot0, stat1 = dType.ConnectDobotX("PORT")
+dobot1, stat2 = dType.ConnectDobotX("PORT")
+...
+dobotx, statX = dType.ConnectDobotX("PORT")
 
 #Connect Dobot
-state = dType.ConnectDobot(api, "", 115200)[0]
-print("Connect status:",CON_STR[state])
+print("Connect status1:",CON_STR[state1[0]])
+print("Connect status2:",CON_STR[state2[0]])
+...
+print("Connect statusX:",CON_STR[stateX[0]])
 ```
 
 ## Python API
 
-DobotDllType.py encapsulates the C type interface of Dobot DLL, which is Python API of Dobot. The example for loading DLL is shown as follows.
+DobotDllTypeX.py encapsulates the C type interface of Dobot DLL, which is Python API of Dobot. The example for loading DLL is shown as follows.
 
 ```PYTHON
 def load():
