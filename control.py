@@ -47,21 +47,21 @@ def INITIALIZE_PickandPlace(api, speed):
 
 
     # Starting cube positions
-    Grab_X = 245.4843
-    Grab_Y = -34.9374
-    Grab_Z = -40.5200
+    Grab_X = 301.6891
+    Grab_Y = -23.6030
+    Grab_Z = -40.8829
 
-    Grab_X1 = 244.8261
-    Grab_Y1 = 2.8280
-    Grab_Z1 = -41.0255
+    Grab_X1 = 297.7000
+    Grab_Y1 = 11.0082
+    Grab_Z1 = -41.9901
 
-    Grab_X2 = 206.5016
-    Grab_Y2 = -34.2731
-    Grab_Z2 = -41.8057
+    Grab_X2 = 259.3505
+    Grab_Y2 = -23.0657
+    Grab_Z2 = -42.1087
 
-    Grab_X3 = 205.6700
-    Grab_Y3 = 2.1857
-    Grab_Z3 = -43.9004
+    Grab_X3 = 255.3329
+    Grab_Y3 = 9.2053
+    Grab_Z3 = -40.9706
 
     """Place 1(left) side"""
     Place_X = 62.7516
@@ -99,27 +99,19 @@ def INITIALIZE_Sorting(api, speed):
     Place_Z_else = -39.5752
 
     # grap left
-    Grab_X_L = 190.4711
-    Grab_Y_L = 196.5507
-    Grab_Z_L = 13.4885
+    Grab_X_L = 188.3358
+    Grab_Y_L = 201.8613
+    Grab_Z_L = 15.5308
 
-    Grab_X_R = -49.7984
-    Grab_Y_R = -288.4771
-    Grab_Z_R = 16.6262
-    # color sensor = JeVois camera
-    # ColorSensor_X = 154.369
-    # ColorSensor_Y = -115.7922
-    # ColorSensor_Z = 27.9397
-    # dType.SetEndEffectorParamsEx(api, 59.7, 0, 0, 1)
+    Grab_X_R = -40.3719
+    Grab_Y_R = -289.4148
+    Grab_Z_R = 14.8599
+
+
     RedCount = 0
     BlueCount = 0
     GreenCount = 0
-    # dType.SetColorSensor(api, 1 ,1, 0)
-    # dType.SetInfraredSensor(api, 1, 1, 0)
-    # can change each joints speed at command
-    # dType.SetPTPJointParamsEx(api, speed, speed, speed, speed, speed, speed, speed, speed, 1)
-    # dType.SetPTPCommonParamsEx(api, 100, 100, 1)
-    # dType.SetPTPJumpParamsEx(api, 50, 100, 1)
+
 
 
 # "getcoler(api) - Starts the color sensor and sets its parameters. It recognises the color of the cube and counts how many of each color we scanned "
@@ -179,7 +171,6 @@ def Sorting(numberofitems, speed, objectid, objectid2, dobot0, dobot1):
     while stop < 2:
         if (placement == "left"):
             placement = "right"
-            # ChangePos(placement)
             # Grap from left
             dType.SetPTPCmdEx(dobot0, 0, Grab_X_L, Grab_Y_L, Grab_Z_L, 0, 1)
             dType.SetEndEffectorSuctionCupEx(dobot0, 1, 1)
@@ -190,18 +181,18 @@ def Sorting(numberofitems, speed, objectid, objectid2, dobot0, dobot1):
             # Grap from right
             dType.SetPTPCmdEx(dobot0, 0, Grab_X_R, Grab_Y_R, Grab_Z_R, 0, 1)
             dType.SetEndEffectorSuctionCupEx(dobot0, 1, 1)
-        if (stop == 0 and objectid == "blue.png"):
-            print("FIRST CUBE IS BLUE! ", objectid , "stop: ", stop)
+        if (stop == 0 and objectid == "cube.png"):
+            print("FIRST ITEM IS CUBE! ", objectid , "stop: ", stop)
             dType.SetPTPCmdEx(dobot0, 0, Place_X_cube, Place_Y_cube, Place_Z_cube, 0, 1)
-        elif(stop == 0 and objectid == "green.png"):
-             print("FIRST CUBE IS GREEN! ",objectid, "stop: ", stop)
+        elif(stop == 0 and objectid == "notcube.png"):
+             print("FIRST ITEM IS NOT CUBE! ",objectid, "stop: ", stop)
              dType.SetPTPCmdEx(dobot0, 0, Place_X_else, Place_Y_else, Place_Z_else, 0, 1)
-        elif(stop == 1 and objectid2 == "green.png"):
-            print("SECOND CUBE IS GREEN! ", objectid2, "stop: ", stop)
-            dType.SetPTPCmdEx(dobot0, 0, Place_X_else, Place_Y_else, Place_Z_else, 0, 1)
-        else:
-            print("SECOND CUBE IS BLUE! ", objectid2 , "stop: ", stop)
+        elif(stop == 1 and objectid2 == "cube.png"):
+            print("SECOND ITEM IS CUBE! ", objectid2, "stop: ", stop)
             dType.SetPTPCmdEx(dobot0, 0, Place_X_cube, Place_Y_cube, Place_Z_cube, 0, 1)
+        else:
+            print("SECOND ITEM IS NOT CUBE! ", objectid2 , "stop: ", stop)
+            dType.SetPTPCmdEx(dobot0, 0, Place_X_else, Place_Y_else, Place_Z_else, 0, 1)
         stop = stop + 1 
         dType.SetEndEffectorSuctionCupEx(dobot0, 0, 1)
 
@@ -288,19 +279,20 @@ def PickandPlace(numberofitems, speed, distance, dobot0, dobot1):
         if(stop > 0 and stop % 2 == 0):
             # Identify object with JeVois Camera
             print("JEVOIS TIME\n")
-            #objectid = objectFound(serdev)
-            #print("object id : ", objectid)
-
-            #objectid2 = objectFound(serdev2)
-            objectid = "blue.png"
-            objectid2 = "green.png"
+            time.sleep(4) #wait for 4 seconds until items reach cameras view
+            objectid = objectFound(serdev)
+            time.sleep(2)  # wait for 2 seconds until items reach second cameras view
+            # Samples
+            #objectid = "cube.png"
+            #objectid2 = "notcube.png"
+            print("object id  1 : ", objectid) #com 13
+            objectid2 = objectFound(serdev2) #com 17
             print("object id 2 : ", objectid2)
-
             Sorting(numberofitems, speed,  objectid, objectid2, dobot0, dobot1)
-
 
         t1.join()
         t2.join()
+
         #exectime = exectime + (time.time() - start_time)
     # execution time output
     #print("--- Sorting %s seconds ---", exectime)
@@ -385,7 +377,10 @@ def main(argv):
             print('USAGE : control.py -n <numberofitems> -s <speed>')
         elif opt in ("-n", "--numberofitems"):
             if (numberofitems > 0):
-                numberofitems = int(arg)
+                if (numberofitems % 2 != 0):
+                    print("Must be even number of items")
+                else:
+                    numberofitems = int(arg)
         elif opt in ("-d", "--distance"):
             distance = int(arg)
             if (distance > 10 or distance < 0):
@@ -394,7 +389,7 @@ def main(argv):
         elif opt in ("-s", "--speed"):
             speed = int(arg)
             if (speed < 321 and speed > 0):
-                printf("Outside speed limits, defaulting to 300")
+                print("Outside speed limits, defaulting to 300")
                 speed = 300
     print('Number of items is ', numberofitems)
     print('Speed of joints : ', speed)
@@ -407,8 +402,8 @@ def main(argv):
     }
 
     # Load Dll and get the CDLL object
-    dobot0, state1 = dType.ConnectDobotX("COM9") # pick and place
-    dobot1, state2 = dType.ConnectDobotX("COM3") # sorting
+    dobot0, state1 = dType.ConnectDobotX("COM3") # sorting
+    dobot1, state2 = dType.ConnectDobotX("COM9") # pick and place
 
     # print(dType.ConnectDobotX("COM3"))
     # print(dType.ConnectDobotX("COM6"))
