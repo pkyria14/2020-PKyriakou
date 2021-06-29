@@ -113,51 +113,6 @@ def INITIALIZE_Sorting(api, speed):
     GreenCount = 0
 
 
-
-# "getcoler(api) - Starts the color sensor and sets its parameters. It recognises the color of the cube and counts how many of each color we scanned "
-"""
-def getcoler(api):
-    global ColorSensor_X, ColorSensor_Y, ColorSensor_Z, R, G, B, MAX, Place_X_red, Place_Y_red, Place_Z_red, RedCount, GreenCount, Place_X_blue, Place_Y_blue, Place_Z_blue, BlueCount
-    # dType.SetPTPCmdEx(api, 0, ColorSensor_X,  ColorSensor_Y,  ColorSensor_Z, 0, 1)
-    # dType.SetWAITCmdEx(api, 1000, 1)
-    R = dType.GetColorSensorEx(api, 0)
-    G = dType.GetColorSensorEx(api, 1)
-    B = dType.GetColorSensorEx(api, 2)
-    MAX = max([R, G, B])
-    if MAX == R:
-        print('Red')
-        dType.SetPTPCmdEx(api, 0, Place_X_red, Place_Y_red, Place_Z_red, 0, 1)
-        dType.SetEndEffectorSuctionCupEx(api, 0, 1)
-        RedCount = RedCount + 1
-    elif MAX == G:
-        print('Green')
-        dType.SetPTPCmdEx(api, 0, Place_X_green, Place_Y_green, Place_Z_green, 0, 1)
-        dType.SetEndEffectorSuctionCupEx(api, 0, 1)
-        GreenCount = GreenCount + 1
-    else:
-        print('Blue')
-        dType.SetPTPCmdEx(api, 0, Place_X_blue, Place_Y_blue, Place_Z_blue, 0, 1)
-        dType.SetEndEffectorSuctionCupEx(api, 0, 1)
-        BlueCount = BlueCount + 1
-"""
-"""Change position that the items will be placed left or right
-def ChangePos(placement):
-  global Place_X_blue, Place_Y_blue, Place_Z_blue, Place_X_green, Place_Y_green, Place_Z_green, Place_X_red, Place_Y_red, Place_Z_red
-  #pos 0
-  Place_X_blue = 223.1086
-  Place_Y_blue = -115.1117
-  Place_Z_blue = -34.4796
-
-  Place_X_green = -117.9651
-  Place_Y_green = -222.0522
-  Place_Z_green = -37.1846
-
-  Place_X_red = 223.1086
-  Place_Y_red = -115.1117
-  Place_Z_red = -34.4796
-  #pos 1
-"""
-
 """Runs the program with parameters(number of items, position to be placed , speed of robot arm). It connects with dobot
 api calls initialize and every time an item reaches the infrared sensor the dobot reaches to get it, then it calls
 getcoler and then places it at its position"""
